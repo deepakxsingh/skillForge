@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Camera, MapPin, Mail, Award, Clock, Heart, Settings, LogOut, ChevronRight } from 'lucide-react';
+import { Camera, MapPin, Mail, Award, Clock, Heart, Settings, LogOut, ChevronRight, Zap, Target, FolderKanban } from 'lucide-react';
 import avatarImg from '../avatar.png';
 import api from '../api';
 
@@ -29,42 +30,42 @@ export default function Profile() {
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="glass-card rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-500/10 border-none relative">
-          {/* Header/Cover Section */}
-          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-700 h-48 relative">
-            <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      <main className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="glass-card rounded-[3.5rem] overflow-hidden shadow-2xl shadow-indigo-500/10 border-none relative bg-white/40 backdrop-blur-3xl">
+          {/* Header/Cover Section with Animated Gradient */}
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-900 h-56 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/20 rounded-full blur-[100px] animate-pulse"></div>
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-violet-500/20 rounded-full blur-[100px] animate-pulse"></div>
           </div>
           
-          <div className="px-8 pb-12 sm:px-12 relative">
-            {/* Avatar Section */}
-            <div className="relative -mt-20 mb-8 flex items-end justify-between">
+          <div className="px-8 pb-12 sm:px-16 relative">
+            {/* Avatar Section - Floating Style */}
+            <div className="relative -mt-24 mb-10 flex items-end justify-between flex-wrap gap-6">
               <div className="relative group">
-                <div className="relative h-40 w-40 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl bg-slate-100 flex items-center justify-center">
+                <div className="relative h-48 w-48 rounded-[3rem] overflow-hidden border-[10px] border-white shadow-2xl bg-slate-900 flex items-center justify-center">
                   <img 
                     src={avatarImg} 
                     alt={user.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="hidden absolute inset-0 bg-blue-600 text-white font-black text-4xl items-center justify-center">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
                 </div>
-                <button className="absolute bottom-2 right-2 p-3 bg-white text-blue-600 rounded-2xl shadow-xl hover:bg-blue-50 transition-colors border-2 border-white group/cam">
-                  <Camera className="w-5 h-5 group-hover/cam:scale-110 transition-transform" />
+                <button className="absolute bottom-2 right-2 p-4 bg-indigo-600 text-white rounded-2xl shadow-2xl hover:bg-indigo-700 transition-all border-4 border-white group/cam hover:scale-110 active:scale-90">
+                  <Camera className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="flex gap-3 mb-4">
-                <button className="p-4 bg-slate-50 text-slate-400 rounded-3xl hover:bg-slate-100 hover:text-slate-600 transition-all">
+              <div className="flex gap-4 mb-4">
+                <button className="p-4 bg-white/60 backdrop-blur-md text-slate-600 rounded-3xl hover:bg-white hover:text-indigo-600 transition-all shadow-sm border border-white/40">
                   <Settings className="w-6 h-6" />
                 </button>
                 <button 
                   onClick={() => {
+                    localStorage.removeItem('token');
                     localStorage.removeItem('user');
                     navigate('/login');
                   }}
-                  className="p-4 bg-rose-50 text-rose-500 rounded-3xl hover:bg-rose-100 transition-all"
+                  className="p-4 bg-rose-50 text-rose-500 rounded-3xl hover:bg-rose-100 transition-all shadow-sm border border-rose-100"
                 >
                   <LogOut className="w-6 h-6" />
                 </button>
@@ -72,51 +73,54 @@ export default function Profile() {
             </div>
             
             {/* User Info Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              <div className="lg:col-span-2 space-y-8">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-5xl font-black text-slate-900 tracking-tight">{user.name}</h1>
-                    <span className="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-black uppercase tracking-widest rounded-full border border-blue-100">
-                      {user.role}
-                    </span>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+              <div className="lg:col-span-2 space-y-12">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <h1 className="text-6xl font-black text-slate-900 tracking-tighter">{user.name}</h1>
+                    <div className="px-5 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-lg shadow-indigo-200">
+                      {user.role || 'Pioneer'}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap items-center gap-6 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
-                    <span className="flex items-center gap-2"><Mail className="w-4 h-4" /> {user.email}</span>
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Campus Hub Alpha</span>
-                    <span className="flex items-center gap-2 text-green-500"><Award className="w-4 h-4" /> {user.credits} Skill Credits</span>
+                  <div className="flex flex-wrap items-center gap-8 text-slate-500 font-bold uppercase tracking-widest text-[10px]">
+                    <span className="flex items-center gap-2.5"><Mail className="w-4 h-4 text-indigo-400" /> {user.email}</span>
+                    <span className="flex items-center gap-2.5"><MapPin className="w-4 h-4 text-indigo-400" /> Digital Campus</span>
+                    <span className="flex items-center gap-2.5 text-indigo-600"><Zap className="w-4 h-4" /> Mastery Rank 4</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   {[
-                    { label: 'Completed', value: '0', icon: <Award className="text-amber-500" />, color: 'bg-amber-50' },
-                    { label: 'In Progress', value: '4', icon: <Clock className="text-blue-500" />, color: 'bg-blue-50' },
-                    { label: 'Achievements', value: '2', icon: <Heart className="text-rose-500" />, color: 'bg-rose-50' }
+                    { label: 'Completion Rate', value: '48%', icon: <Target className="text-indigo-600" />, color: 'bg-indigo-50' },
+                    { label: 'Skill Credits', value: user.credits || '1,250', icon: <Award className="text-amber-500" />, color: 'bg-amber-50' },
+                    { label: 'Contributions', value: '12', icon: <Heart className="text-rose-500" />, color: 'bg-rose-50' }
                   ].map((stat, i) => (
-                    <div key={i} className={`p-6 rounded-[2rem] ${stat.color} border border-transparent hover:border-white transition-all`}>
-                      <div className="mb-2">{stat.icon}</div>
-                      <div className="text-2xl font-black text-slate-900">{stat.value}</div>
-                      <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">{stat.label}</div>
+                    <div key={i} className={`p-8 rounded-[2.5rem] ${stat.color} border border-white transition-all hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/5 group`}>
+                      <div className="mb-4 p-3 bg-white w-fit rounded-2xl shadow-sm group-hover:rotate-12 transition-transform">{stat.icon}</div>
+                      <div className="text-3xl font-black text-slate-900">{stat.value}</div>
+                      <div className="text-[10px] font-black uppercase tracking-[0.1em] text-slate-400 mt-1">{stat.label}</div>
                     </div>
                   ))}
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-black text-slate-900 tracking-tight">Portfolio of Work</h2>
-                    <button className="text-xs font-black text-blue-600 uppercase tracking-widest hover:underline flex items-center gap-1">
-                      View All <ChevronRight className="w-4 h-4" />
+                    <h2 className="text-3xl font-black text-slate-900 tracking-tight">Project Portfolio</h2>
+                    <button className="text-xs font-black text-indigo-600 uppercase tracking-widest hover:underline flex items-center gap-2 group">
+                      Expand Portfolio <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
                   </div>
-                  <div className="text-center py-20 glass-card rounded-[2.5rem] border-2 border-dashed border-slate-200">
-                    <div className="max-w-xs mx-auto space-y-4">
-                      <div className="h-16 w-16 bg-slate-50 text-slate-300 rounded-3xl flex items-center justify-center mx-auto">
-                        <Award size={32} />
+                  <div className="text-center py-24 glass-card rounded-[3rem] border-2 border-dashed border-slate-200 bg-slate-50/50">
+                    <div className="max-w-xs mx-auto space-y-6">
+                      <div className="h-20 w-20 bg-white text-slate-200 rounded-[2rem] flex items-center justify-center mx-auto shadow-sm">
+                        <FolderKanban size={40} />
                       </div>
-                      <p className="text-slate-400 font-medium">No projects completed yet. Start learning to build your auto-portfolio.</p>
-                      <Link to="/skills" className="inline-block px-8 py-3 bg-blue-600 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all">
-                        Browse Skills
+                      <div className="space-y-2">
+                        <p className="text-slate-800 font-bold text-lg">Your canvas is empty</p>
+                        <p className="text-slate-400 text-sm font-medium">Start a project module to display your technical expertise here.</p>
+                      </div>
+                      <Link to="/skills" className="inline-flex h-14 items-center px-10 bg-indigo-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-2xl shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-1 active:translate-y-0 transition-all">
+                        Initialize Learning
                       </Link>
                     </div>
                   </div>
@@ -124,25 +128,44 @@ export default function Profile() {
               </div>
 
               {/* Sidebar/Activity */}
-              <div className="space-y-8">
-                 <div className="p-8 glass-card rounded-[2.5rem] bg-slate-900 text-white">
-                    <h3 className="text-xl font-black mb-6">Course Activity</h3>
-                    <div className="space-y-6">
+              <div className="space-y-10">
+                 <div className="p-10 glass-card rounded-[3rem] bg-slate-900 text-white shadow-2xl shadow-indigo-900/40 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-8 opacity-10">
+                       <Zap size={80} />
+                    </div>
+                    <h3 className="text-2xl font-black mb-10 tracking-tight">Active Curriculums</h3>
+                    <div className="space-y-8 relative z-10">
                        {[
-                         { name: 'Web Dev Fundamentals', prog: 65 },
-                         { name: 'UI/UX Principles', prog: 30 },
-                         { name: 'Modern React', prog: 12 }
+                         { name: 'Web Dev Mastery', prog: 65, color: 'bg-indigo-500' },
+                         { name: 'UI/UX Architect', prog: 30, color: 'bg-violet-500' },
+                         { name: 'Modern React', prog: 12, color: 'bg-blue-500' }
                        ].map((course, i) => (
-                         <div key={i} className="space-y-2">
-                           <div className="flex justify-between text-[11px] font-black uppercase tracking-widest text-slate-400">
+                         <div key={i} className="space-y-3">
+                           <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                              <span>{course.name}</span>
-                             <span>{course.prog}%</span>
+                             <span className="text-white">{course.prog}%</span>
                            </div>
-                           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                             <div className="h-full bg-blue-500 rounded-full" style={{ width: `${course.prog}%` }}></div>
+                           <div className="h-3 bg-white/10 rounded-full overflow-hidden p-[2px]">
+                             <div className={`h-full ${course.color} rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(99,102,241,0.5)]`} style={{ width: `${course.prog}%` }}></div>
                            </div>
                          </div>
                        ))}
+                    </div>
+                    <button className="w-full mt-10 py-5 bg-white/10 hover:bg-white/20 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border border-white/5">
+                       View Learning DNA
+                    </button>
+                 </div>
+
+                 <div className="p-8 glass-card rounded-[2.5rem] bg-indigo-50 border border-indigo-100">
+                    <h4 className="font-black text-slate-900 uppercase tracking-widest text-[10px] mb-4">Daily Goal</h4>
+                    <div className="flex items-center gap-4">
+                       <div className="h-12 w-12 rounded-xl bg-white flex items-center justify-center text-indigo-600 shadow-sm">
+                          <Clock size={20} />
+                       </div>
+                       <div>
+                          <p className="text-sm font-bold text-slate-800">2 Hours Learned</p>
+                          <p className="text-[10px] font-bold text-slate-500 uppercase">Target: 4 Hours</p>
+                       </div>
                     </div>
                  </div>
               </div>
