@@ -5,6 +5,7 @@ import {
   BookOpen, Users, Trophy, Settings, LogOut,
   LayoutDashboard, FolderKanban, Info, Mail
 } from 'lucide-react';
+import avatarImg from '../avatar.png';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -93,10 +94,10 @@ export default function Header() {
                    <span className="text-xs font-black text-slate-800 leading-none">{user.name || 'User'}</span>
                    <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-1">Level 12</span>
                 </div>
-                <Link to="/dashboard" className="relative group">
+                <Link to="/profile" className="relative group">
                    <img 
-                    src={`https://i.pravatar.cc/150?u=${user.id || 'me'}`} 
-                    className="w-10 h-10 rounded-xl ring-2 ring-indigo-100 group-hover:ring-indigo-500 transition-all object-cover" 
+                    src={avatarImg} 
+                    className="w-10 h-10 rounded-xl ring-2 ring-indigo-100 group-hover:ring-indigo-500 transition-all object-cover shadow-sm bg-slate-900" 
                     alt="User" 
                    />
                 </Link>
