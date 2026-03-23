@@ -1,12 +1,20 @@
 {
-  "name": "skillforge-server",
+  "name": "skillforge",
   "version": "1.0.0",
+  "description": "---",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon.cmd index.js",
-    "test": "jest --detectOpenHandles"
+    "dev": "concurrently \"npm.cmd run server\" \"npm.cmd run client\"",
+    "client": "npm.cmd start --prefix client",
+    "server": "npm.cmd run dev --prefix server",
+    "start": "npm.cmd run dev",
+    "test": "echo \"Run tests: npm.cmd test --prefix server\"",
+    "docker": "docker-compose up"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
@@ -17,8 +25,7 @@
     "morgan": "^1.10.1"
   },
   "devDependencies": {
-    "jest": "^29.5.0",
-    "nodemon": "^3.1.14",
-    "supertest": "^6.3.3"
+    "concurrently": "^8.0.0",
+    "nodemon": "^3.1.14"
   }
 }
