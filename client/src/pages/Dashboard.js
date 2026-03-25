@@ -16,7 +16,25 @@ export default function Dashboard() {
     }
   }, [navigate]);
 
-  if (!user) return <div className="p-8 text-center text-slate-500 font-medium animate-pulse">✨ Preparing your workspace...</div>;
+  if (!user) return (
+    <div className="space-y-12 page-transition pb-20 p-8">
+      <div className="flex flex-col md:flex-row justify-between gap-12">
+        <div className="space-y-6 w-full max-w-xl">
+           <div className="h-6 w-32 shimmer rounded-full"></div>
+           <div className="h-20 w-full shimmer rounded-[3rem]"></div>
+           <div className="h-6 w-64 shimmer rounded-xl"></div>
+        </div>
+        <div className="flex gap-4">
+           <div className="h-24 w-32 shimmer rounded-[2rem]"></div>
+           <div className="h-24 w-32 shimmer rounded-[2rem]"></div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+         <div className="h-80 w-full shimmer rounded-[3rem]"></div>
+         <div className="h-80 w-full shimmer rounded-[3rem]"></div>
+      </div>
+    </div>
+  );
 
   const activeLessons = [
     { title: 'React.js Architecture', category: 'Web Dev', progress: 65, icon: <BookOpen className="w-4 h-4" /> },
@@ -24,7 +42,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-1000 pb-20">
+    <div className="space-y-10 page-transition pb-20">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-10">
         <div className="space-y-2">
@@ -33,7 +51,7 @@ export default function Dashboard() {
             <span>Top 10% on Campus</span>
           </div>
           <h1 className="text-5xl font-black text-slate-900 tracking-tight leading-none">
-            Welcome back, <br /><span className="text-indigo-600">{user.name.split(' ')[0]}!</span>
+            Welcome back, <br /><span className="text-gradient">{user.name.split(' ')[0]}!</span>
           </h1>
           <p className="text-slate-500 text-lg font-medium leading-relaxed max-w-xl">
             You have 3 active projects and 2 courses in progress. Keep the momentum going!
@@ -45,8 +63,8 @@ export default function Dashboard() {
              <span className="text-2xl font-black text-slate-900 leading-none mb-2">🟡 {user.credits}</span>
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Premium Credits</span>
           </div>
-          <div className="bg-indigo-600 p-4 rounded-3xl text-white shadow-xl shadow-indigo-600/20 min-w-[140px] flex flex-col items-center">
-             <span className="text-2xl font-black leading-none mb-2">Level 12</span>
+          <div className="bg-indigo-600 p-4 rounded-3xl text-white shadow-xl shadow-indigo-600/20 min-w-[140px] flex flex-col items-center text-center">
+             <span className="text-2xl font-black leading-none mb-2 text-center">Level {Math.floor((user.reputationScore || 0) / 10) + 1}</span>
              <span className="text-[10px] font-bold text-indigo-100/60 uppercase tracking-widest text-center">Skill Ranking</span>
           </div>
         </div>
@@ -93,7 +111,7 @@ export default function Dashboard() {
 
       {/* Main Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-        <div className="glass-card p-10 rounded-[3rem] group transition-all hover:scale-[1.01] hover:shadow-2xl border border-transparent hover:border-indigo-100/50">
+        <div className="glass-card tilt-card p-10 rounded-[3rem] group border border-transparent hover:border-indigo-100/50">
           <div className="w-16 h-16 bg-indigo-50 rounded-3xl flex items-center justify-center text-indigo-600 mb-8 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-indigo-500/10">
             <TrendingUp className="w-8 h-8" />
           </div>
@@ -107,7 +125,7 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        <div className="bg-slate-950 p-10 rounded-[3rem] group transition-all hover:scale-[1.01] hover:shadow-2xl overflow-hidden relative">
+        <div className="bg-slate-950 p-10 rounded-[3rem] tilt-card group transition-all hover:shadow-2xl overflow-hidden relative">
           <div className="relative z-10">
             <div className="w-16 h-16 bg-emerald-500/20 rounded-3xl flex items-center justify-center text-emerald-400 mb-8 font-black text-2xl group-hover:bg-emerald-500 group-hover:text-black transition-all duration-500 shadow-lg shadow-emerald-500/10">
                $
